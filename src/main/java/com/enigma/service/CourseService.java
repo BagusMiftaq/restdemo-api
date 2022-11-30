@@ -10,7 +10,7 @@ public interface CourseService {
 
     Course create(Course course) throws Exception;
 
-    Optional<Course> get(String id);
+    Course get(String id) throws Exception;
 
     void update(Course course, String id);
 

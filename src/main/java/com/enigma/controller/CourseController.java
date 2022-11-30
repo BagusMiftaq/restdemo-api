@@ -42,7 +42,7 @@ public class CourseController {
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable("id") String id) throws Exception {
 
-        Optional<Course> course = courseService.get(id);
+        Course course = courseService.get(id);
         return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse("A course was finded", course));
 
     }

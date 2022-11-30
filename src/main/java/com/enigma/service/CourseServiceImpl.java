@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -31,19 +30,19 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course create(Course course) throws Exception {
-        if(courseRepository.getAll().size()<dataLength){
+        if(!(courseRepository.getAll().size()<dataLength)){
             throw new Exception("Data is full");
         }
         return courseRepository.create(course);
     }
 
     @Override
-    public Optional<Course> get(String id) {
-        try {
-            return courseRepository.findById(id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    public Course get(String id) throws Exception {
+        Optional<Course> result = courseRepository.findById(id);
+        if (result.isEmpty()){
+            throw new NotFoundException();
         }
+        return result.get();
     }
 
     @Override
