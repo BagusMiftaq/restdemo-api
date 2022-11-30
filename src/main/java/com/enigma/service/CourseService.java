@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CourseService {
-    List<Course> list();
+    List<Course> list() throws Exception;
 
-    Course create(Course course);
+    Course create(Course course) throws Exception;
 
     Optional<Course> get(String id);
 
@@ -16,5 +16,5 @@ public interface CourseService {
 
     void delete(String id);
 
-    Optional<List<Course>> getBy(String key, String value);
+    Optional<List<Course>> getBy(String key, String value) throws Exception;
 }

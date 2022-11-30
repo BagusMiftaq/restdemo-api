@@ -1,8 +1,10 @@
 package com.enigma.service;
 
+import com.enigma.exception.NotFoundException;
 import com.enigma.model.Course;
 import com.enigma.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,25 +14,27 @@ import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
+    @Value("3")
+    Integer dataLength;
+
     @Autowired
     private CourseRepository courseRepository;
 
     @Override
-    public List<Course> list() {
-        try {
-            return courseRepository.getAll();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    public List<Course> list() throws Exception {
+        List<Course> result = courseRepository.getAll();
+        if(result.isEmpty()){
+            throw new NotFoundException();
         }
+        return result;
     }
 
     @Override
-    public Course create(Course course) {
-        try {
-            return courseRepository.create(course);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    public Course create(Course course) throws Exception {
+        if(courseRepository.getAll().size()<dataLength){
+            throw new Exception("Data is full");
         }
+        return courseRepository.create(course);
     }
 
     @Override
@@ -67,7 +71,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Optional<List<Course>> getBy(String key, String value) {
+    public Optional<List<Course>> getBy(String key, String value) throws Exception {
         List<Course> result = new ArrayList<>();
         for (Course course : list()) {
             switch (key) {
