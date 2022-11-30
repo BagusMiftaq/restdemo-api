@@ -16,4 +16,10 @@ public interface CourseRepository {
     void update(Course course, String id) throws Exception;
 
     void delete(String id) throws Exception;
+
+    Optional<Course> findByTitle(String title) throws Exception;
+
+    Optional<Course> findByDesc(String description) throws Exception;
+
+    Optional<Course> findByLink(String link) throws Exception;
 }

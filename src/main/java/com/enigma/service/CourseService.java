@@ -15,4 +15,6 @@ public interface CourseService {
     void update(Course course, String id);
 
     void delete(String id);
+
+    List<Course> getBy(String key, String value);
 }

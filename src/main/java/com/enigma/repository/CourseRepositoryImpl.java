@@ -63,4 +63,39 @@ public class CourseRepositoryImpl implements CourseRepository{
             
         }
     }
+
+    @Override
+    public Optional<Course> findByTitle(String title) throws Exception {
+        for (Course course: courses
+        ) {
+            if (course.getTitle().equals(title)){
+                return Optional.of(course);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Course> findByDesc(String description) throws Exception {
+        for (Course course: courses
+        ) {
+            if (course.getDescription().equals(description)){
+                return Optional.of(course);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Course> findByLink(String link) throws Exception {
+        for (Course course: courses
+        ) {
+            if (course.getLink().equals(link)){
+                return Optional.of(course);
+            }
+        }
+        return Optional.empty();
+    }
 }
