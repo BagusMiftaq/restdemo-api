@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class CourseServiceImpl implements CourseService{
+public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
@@ -19,7 +19,7 @@ public class CourseServiceImpl implements CourseService{
     public List<Course> list() {
         try {
             return courseRepository.getAll();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -28,7 +28,7 @@ public class CourseServiceImpl implements CourseService{
     public Course create(Course course) {
         try {
             return courseRepository.create(course);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -37,7 +37,7 @@ public class CourseServiceImpl implements CourseService{
     public Optional<Course> get(String id) {
         try {
             return courseRepository.findById(id);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -46,7 +46,7 @@ public class CourseServiceImpl implements CourseService{
     public void update(Course course, String id) {
         try {
             courseRepository.update(course, id);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -55,28 +55,34 @@ public class CourseServiceImpl implements CourseService{
     public void delete(String id) {
         try {
             courseRepository.delete(id);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    @Override
-    public List<Course> getBy(String key, String value) {
-        List<Course> courses = new ArrayList<>();
-        try {
-               switch (key){
-                case "title":
-                    return courses = courseRepository.getAll().stream().filter(course -> course.getTitle().equals(value)).collect(Collectors.toList());
-                case "description":
-                    return courses = courseRepository.getAll().stream().filter(course -> course.getDescription().equals(value)).collect(Collectors.toList());
-                case "link":
-                    return courses = courseRepository.getAll().stream().filter(course -> course.getLink().equals(value)).collect(Collectors.toList());
-                default:
-                    return courses = courseRepository.findById(value).stream().collect(Collectors.toList());
-            }
-        } catch (Exception e){
-            throw new RuntimeException(e);
+    void addBucket(String keyword, String value, List<Course> bucket, Course course) {
+        if (keyword.toLowerCase().contains(value)) {
+            bucket.add(course);
         }
+    }
 
+    @Override
+    public Optional<List<Course>> getBy(String key, String value) {
+        List<Course> result = new ArrayList<>();
+        for (Course course : list()) {
+            switch (key) {
+                case "title":
+                    addBucket(course.getTitle(), value.toLowerCase(), result, course);
+                    break;
+                case "description":
+                    addBucket(course.getDescription(), value.toLowerCase(), result, course);
+                    break;
+                case "link":
+                    addBucket(course.getLink(), value.toLowerCase(), result, course);
+                    break;
+
+            }
+        }
+        return result.isEmpty() ? Optional.empty() : Optional.of(result);
     }
 }

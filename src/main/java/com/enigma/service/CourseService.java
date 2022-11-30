@@ -16,5 +16,5 @@ public interface CourseService {
 
     void delete(String id);
 
-    List<Course> getBy(String key, String value);
+    Optional<List<Course>> getBy(String key, String value);
 }
