@@ -66,13 +66,13 @@ public class CourseServiceImpl implements CourseService{
         try {
                switch (key){
                 case "title":
-                    return courses = courseRepository.getAll().stream().filter(course -> course.getTitle().equals(value)).collect(Collectors.toList());
+                    return courses = courseRepository.getAll().stream().filter(course -> course.getTitle().equals(value.toLowerCase())).collect(Collectors.toList());
                 case "description":
-                    return courses = courseRepository.getAll().stream().filter(course -> course.getDescription().equals(value)).collect(Collectors.toList());
+                    return courses = courseRepository.getAll().stream().filter(course -> course.getDescription().equals(value.toLowerCase())).collect(Collectors.toList());
                 case "link":
-                    return courses = courseRepository.getAll().stream().filter(course -> course.getLink().equals(value)).collect(Collectors.toList());
+                    return courses = courseRepository.getAll().stream().filter(course -> course.getLink().equals(value.toLowerCase())).collect(Collectors.toList());
                 default:
-                    return courses = courseRepository.findById(value).stream().collect(Collectors.toList());
+                    return courses = courseRepository.findById(value.toLowerCase()).stream().collect(Collectors.toList());
             }
         } catch (Exception e){
             throw new RuntimeException(e);
